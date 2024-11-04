@@ -12,6 +12,20 @@ opts.Update(env)
 
 result_path = os.path.join("bin", "gdupnp")
 
+# Our includes and sources
+env.Append(CPPDEFINES=["GDEXTENSION"])  # Tells our sources we are building a GDExtension, not a module.
+sources = [
+    "src/register_types.cpp",
+    "src/upnp.cpp",
+    "src/upnp_device.cpp",
+]
+
+# Documentation
+if env["target"] in ["editor", "template_debug"]:
+    doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
+    sources.append(doc_data)
+
+# Thirdparty sources
 thirdparty_sources = []
 
 if env["builtin_miniupnpc"]:
@@ -38,14 +52,6 @@ if env["builtin_miniupnpc"]:
     env.Append(CPPDEFINES=["MINIUPNP_STATICLIB"])
     if env["platform"] != "windows":
         env.Append(CPPDEFINES=["MINIUPNPC_SET_SOCKET_TIMEOUT"])
-
-# Our includes and sources
-env.Append(CPPDEFINES=["GDEXTENSION"])  # Tells our sources we are building a GDExtension, not a module.
-sources = [
-    "src/register_types.cpp",
-    "src/upnp.cpp",
-    "src/upnp_device.cpp",
-]
 
 sources += thirdparty_sources
 

@@ -1,0 +1,6 @@
+{
+    global:
+        upnp_extension_init;
+    local:
+        *;
+};

@@ -49,6 +49,23 @@ sources = [
 
 sources += thirdparty_sources
 
+# We want to statically link against libstdc++ on Linux to maximize compatibility, but we must restrict the exported
+# symbols using a GCC version script, or we might end up overriding symbols from other libraries.
+# Using "-fvisibility=hidden" will not work, since libstdc++ explicitly exports its symbols.
+symbols_file = None
+if env["platform"] == "linux" or (
+    env["platform"] == "windows" and env.get("use_mingw", False) and not env.get("use_llvm", False)
+):
+    symbols_file = env.File("misc/gcc/symbols-extension.map")
+    env.Append(
+        LINKFLAGS=[
+            "-Wl,--no-undefined,--version-script=" + symbols_file.abspath,
+            "-static-libgcc",
+            "-static-libstdc++",
+        ]
+    )
+    env.Depends(sources, symbols_file)
+
 # Windows libraries
 if env["platform"] == "windows":
     env.Append(LIBS=["ws2_32", "iphlpapi"])

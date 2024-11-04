@@ -33,7 +33,7 @@ if env["builtin_miniupnpc"]:
     ]
     thirdparty_sources = [thirdparty_dir + "src/" + file for file in thirdparty_sources]
 
-    env.Prepend(CPPPATH=["src/miniupnpc"])
+    env.Prepend(CPPPATH=["src/thirdparty/miniupnpc"])
     env.Prepend(CPPPATH=[thirdparty_dir + "include"])
     env.Append(CPPDEFINES=["MINIUPNP_STATICLIB"])
     if env["platform"] != "windows":

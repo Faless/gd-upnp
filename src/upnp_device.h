@@ -31,7 +31,12 @@
 #ifndef UPNP_DEVICE_H
 #define UPNP_DEVICE_H
 
+#ifdef GDEXTENSION
+#include <godot_cpp/classes/ref_counted.hpp>
+using namespace godot;
+#else
 #include "core/object/ref_counted.h"
+#endif
 
 class UPNPDevice : public RefCounted {
 	GDCLASS(UPNPDevice, RefCounted);

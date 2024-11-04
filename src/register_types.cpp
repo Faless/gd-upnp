@@ -47,3 +47,15 @@ void uninitialize_upnp_module(ModuleInitializationLevel p_level) {
 		return;
 	}
 }
+
+extern "C" {
+GDExtensionBool GDE_EXPORT upnp_extension_init(const GDExtensionInterfaceGetProcAddress p_interface, const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+	GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
+
+	init_obj.register_initializer(initialize_upnp_module);
+	init_obj.register_terminator(uninitialize_upnp_module);
+	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
+
+	return init_obj.init();
+}
+}

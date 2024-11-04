@@ -31,7 +31,12 @@
 #ifndef UPNP_REGISTER_TYPES_H
 #define UPNP_REGISTER_TYPES_H
 
+#ifdef GDEXTENSION
+#include <godot_cpp/core/class_db.hpp>
+using namespace godot;
+#else
 #include "modules/register_module_types.h"
+#endif
 
 void initialize_upnp_module(ModuleInitializationLevel p_level);
 void uninitialize_upnp_module(ModuleInitializationLevel p_level);

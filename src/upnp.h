@@ -33,7 +33,12 @@
 
 #include "upnp_device.h"
 
+#ifdef GDEXTENSION
+#include <godot_cpp/classes/ref_counted.hpp>
+using namespace godot;
+#else
 #include "core/object/ref_counted.h"
+#endif
 
 #include <miniupnpc.h>
 

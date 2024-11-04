@@ -125,7 +125,7 @@ void UPNP::parse_igd(Ref<UPNPDevice> dev, UPNPDev *devlist) {
 	struct IGDdatas data;
 
 	parserootdesc(xml, size, &data);
-	free(xml);
+	::free(xml);
 	xml = nullptr;
 
 	GetUPNPUrls(&urls, &data, dev->get_description_url().utf8().get_data(), 0);

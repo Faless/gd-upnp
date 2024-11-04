@@ -77,8 +77,21 @@ if env["platform"] == "windows":
     env.Append(LIBS=["ws2_32", "iphlpapi"])
 
 # Make the shared library
-result_name = "gdupnp{}{}".format(env["suffix"], env["SHLIBSUFFIX"])
-library = env.SharedLibrary(target=os.path.join(result_path, "lib", result_name), source=sources)
+result_name = "libgdupnp{}{}".format(env["suffix"], env["SHLIBSUFFIX"])
+
+if env["platform"] in ["macos", "ios"]:
+    framework_path = os.path.join(
+        result_path, "lib", "libgdupnp.{}.{}.{}.framework".format(env["target"], env["platform"], env["arch"])
+    )
+    library_file = env.SharedLibrary(target=os.path.join(framework_path, result_name), source=sources)
+    plist_file = env.Substfile(
+        os.path.join(framework_path, "Resources", "Info.plist"),
+        "misc/dist/{}/Info.plist".format(env["platform"]),
+        SUBST_DICT={"{LIBRARY_NAME}": result_name, "{DISPLAY_NAME}": "libgdupnp" + env["suffix"]},
+    )
+    library = [library_file, plist_file]
+else:
+    library = env.SharedLibrary(target=os.path.join(result_path, "lib", result_name), source=sources)
 
 Default(library)
 

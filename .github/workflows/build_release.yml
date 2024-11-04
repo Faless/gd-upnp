@@ -245,12 +245,10 @@ jobs:
           DESTINATION: "release"
         run: |
           mkdir release
-
-          TYPE="gdupnp" ./misc/scripts/package_release.sh
-
+          ./misc/scripts/package_release.sh
           ls -R release
 
       - uses: actions/upload-artifact@v4
         with:
-          name: release
-          path: godot-*.zip
+          name: godot-upnp
+          path: release/*
